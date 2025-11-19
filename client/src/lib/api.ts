@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 import axios, { type InternalAxiosRequestConfig } from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5174/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE || 'http://localhost:5174/api';
 
 export const TOKEN_STORAGE_KEY = 'moodpeek_token';
 export const USER_STORAGE_KEY = 'moodpeek_user';
