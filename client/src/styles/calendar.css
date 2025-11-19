@@ -1,0 +1,319 @@
+:root {
+  --calendar-surface: rgba(255, 255, 255, 0.03);
+  --calendar-border: rgba(255, 255, 255, 0.08);
+  --calendar-highlight: rgba(99, 102, 241, 0.14);
+  --calendar-week-bg: color-mix(in srgb, var(--surface-1) 10%, transparent);
+  --calendar-week-hover: color-mix(in srgb, var(--surface-1) 18%, transparent);
+  --calendar-week-active: color-mix(in srgb, var(--pico-primary) 18%, var(--surface-1));
+}
+
+.calendar-layout {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 960px) {
+  .calendar-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
+    align-items: flex-start;
+  }
+}
+
+.calendar-card,
+.week-panel {
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.calendar-month-nav {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.calendar-month-nav button {
+  border: 1px solid var(--calendar-border);
+  background: transparent;
+  color: inherit;
+  border-radius: 999px;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.calendar-weekdays {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: var(--pico-muted-color);
+}
+
+.calendar-weekdays span {
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+
+.calendar-grid {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.calendar-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.35rem;
+  padding: 0.25rem;
+  border-radius: 14px;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  background: var(--calendar-week-bg);
+  border: 1px solid var(--calendar-border);
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+.calendar-week.selected {
+  background: var(--calendar-week-active);
+  border-color: color-mix(in srgb, var(--pico-primary) 55%, var(--calendar-border));
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.25);
+  transform: translateY(-2px);
+}
+
+.calendar-week:not(.selected):hover {
+  background: var(--calendar-week-hover);
+  border-color: color-mix(in srgb, var(--calendar-border) 80%, transparent);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+  transform: translateY(-1px);
+}
+
+.calendar-week.selected:hover {
+  background: var(--calendar-week-active);
+  border-color: color-mix(in srgb, var(--pico-primary) 55%, var(--calendar-border));
+}
+
+.calendar-day {
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem 0.25rem;
+  border-radius: 12px;
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.calendar-day span {
+  font-size: 1rem;
+}
+
+.calendar-day.outside {
+  color: var(--pico-muted-color);
+  opacity: 0.65;
+}
+
+.calendar-day.has-entries::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--pico-primary, #6366f1);
+  position: absolute;
+  bottom: 6px;
+}
+
+.calendar-day.today {
+  outline: 1px dashed rgba(255, 255, 255, 0.4);
+  outline-offset: -4px;
+}
+
+.calendar-day.streak {
+  border: 1px solid rgba(99, 102, 241, 0.4);
+}
+
+.calendar-day.active-week {
+  background: rgba(99, 102, 241, 0.18);
+  color: var(--pico-primary);
+}
+
+.week-panel header {
+  margin-bottom: 1rem;
+}
+
+.streak-card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.75rem;
+  /* padding: 0.75rem; */
+  margin-bottom: 1rem;
+}
+
+.streak-card strong {
+  font-size: 1.25rem;
+}
+
+.week-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.metric-card {
+  padding: 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--calendar-border);
+  background: var(--calendar-surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.metric-card strong {
+  font-size: 1.25rem;
+}
+
+.metric-card span {
+  font-size: 0.9rem;
+  color: var(--pico-muted-color);
+}
+
+.week-summary {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.top-tags {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-right: 0.35rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+}
+
+.week-entries h3 {
+  margin-bottom: 0.75rem;
+}
+
+.week-entry-card {
+  border: 1px solid var(--calendar-border);
+  border-radius: 14px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.week-panel .streak-card,
+.week-panel .week-metrics-grid,
+.week-panel .week-summary,
+.week-panel .top-tags,
+.week-panel .tag-highlight,
+.week-panel .week-placeholder,
+.week-panel .week-entries {
+  border: 1px solid color-mix(in srgb, var(--calendar-border) 85%, transparent);
+  border-radius: 1.25rem;
+  background: color-mix(in srgb, var(--surface-1) 96%, transparent);
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12);
+  padding: clamp(0.85rem, 2vw, 1.25rem);
+}
+
+.tag-highlight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.week-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.week-entry-day {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.week-entry-day span {
+  color: var(--pico-muted-color);
+  font-size: 0.85rem;
+}
+
+.week-entry-items {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.week-entry-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.mood-chip {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 1.5rem;
+}
+
+.entry-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  font-size: 0.95rem;
+  color: var(--pico-muted-color);
+}
+
+.entry-note {
+  margin: 0.35rem 0;
+}
+
+.entry-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.entry-tag {
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 0.8rem;
+}
